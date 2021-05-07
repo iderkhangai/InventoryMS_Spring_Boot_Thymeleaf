@@ -1,0 +1,15 @@
+[{
+  "_id": {
+    "$oid": "609154423173672f958af1ed"
+  },
+  "name": "Laptop",
+  "description": "",
+  "_class": "com.task.demo.model.Category"
+},{
+  "_id": {
+    "$oid": "60931a4f2ad5db3c7c8c26a0"
+  },
+  "name": "Mobile Phone",
+  "description": "All type of Mobile devices",
+  "_class": "com.task.demo.model.Category"
+}]

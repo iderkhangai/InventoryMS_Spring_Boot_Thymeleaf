@@ -1,0 +1,19 @@
+[{
+  "_id": {
+    "$oid": "6091543a3173672f958af1ec"
+  },
+  "name": "Dell",
+  "_class": "com.task.demo.model.Brand"
+},{
+  "_id": {
+    "$oid": "60931a592ad5db3c7c8c26a1"
+  },
+  "name": "Samsung",
+  "_class": "com.task.demo.model.Brand"
+},{
+  "_id": {
+    "$oid": "60931a5e2ad5db3c7c8c26a2"
+  },
+  "name": "iPhone",
+  "_class": "com.task.demo.model.Brand"
+}]

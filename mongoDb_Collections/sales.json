@@ -1,0 +1,107 @@
+[{
+  "_id": {
+    "$oid": "609567e2c54dd07cbdd50542"
+  },
+  "salecode": "SL_994",
+  "status": "Pending",
+  "paymentStatus": "Pending",
+  "date": "2021-05-07",
+  "amount": 1000,
+  "user": {
+    "_id": {
+      "$oid": "60931a682ad5db3c7c8c26a3"
+    },
+    "fullname": "iderkhangai amarkhuu",
+    "email": "iderhangai2014@gmail.com",
+    "phone": "+36706730794",
+    "address": "317, Building E/6, Miskolc, University Town, Magyarország\r\n317th door of 3rd floor, Building E/6 Miskolc University"
+  },
+  "products": [
+    {
+      "_id": {
+        "$oid": "60931aaa2ad5db3c7c8c26a5"
+      },
+      "name": "HP T110",
+      "price": "2500000",
+      "quantity": "10",
+      "description": "",
+      "image": "center_facing.png",
+      "category": "Laptop",
+      "supplier": "iderkhangai amarkhuu",
+      "barcode": "439868230",
+      "brand": "Dell"
+    }
+  ],
+  "_class": "com.task.demo.model.Sales"
+},{
+  "_id": {
+    "$oid": "60957434c833954efbbd079a"
+  },
+  "salecode": "SL_626",
+  "status": "Pending",
+  "paymentStatus": "Unpaid",
+  "date": "2021-05-01",
+  "amount": 2500,
+  "user": {
+    "_id": {
+      "$oid": "60931a682ad5db3c7c8c26a3"
+    },
+    "fullname": "iderkhangai amarkhuu",
+    "email": "iderhangai2014@gmail.com",
+    "phone": "+36706730794",
+    "address": "317, Building E/6, Miskolc, University Town, Magyarország\r\n317th door of 3rd floor, Building E/6 Miskolc University"
+  },
+  "products": [
+    {
+      "_id": {
+        "$oid": "60931a8d2ad5db3c7c8c26a4"
+      },
+      "name": "Samsung Galaxy S10",
+      "price": "150000",
+      "quantity": "15",
+      "description": "New",
+      "image": "s10.jpg",
+      "category": "Mobile Phone",
+      "supplier": "iderkhangai amarkhuu",
+      "barcode": "572601319",
+      "brand": "Samsung"
+    }
+  ],
+  "_class": "com.task.demo.model.Sales"
+},{
+  "_id": {
+    "$oid": "60957544c04d8a573daf683b"
+  },
+  "salecode": "SL_790",
+  "status": "Pending",
+  "paymentStatus": "Pending",
+  "date": "2021-05-21",
+  "amount": 14698,
+  "note": "aahahahh",
+  "user": {
+    "_id": {
+      "$oid": "60931a682ad5db3c7c8c26a3"
+    },
+    "fullname": "iderkhangai amarkhuu",
+    "email": "iderhangai2014@gmail.com",
+    "phone": "+36706730794",
+    "address": "317, Building E/6, Miskolc, University Town, Magyarország\r\n317th door of 3rd floor, Building E/6 Miskolc University"
+  },
+  "products": [
+    {
+      "_id": {
+        "$oid": "60931aaa2ad5db3c7c8c26a5"
+      },
+      "name": "HP T110",
+      "price": "2500000",
+      "quantity": "10",
+      "description": "",
+      "image": "center_facing.png",
+      "category": "Laptop",
+      "supplier": "iderkhangai amarkhuu",
+      "barcode": "439868230",
+      "brand": "Dell"
+    }
+  ],
+  "_class": "com.task.demo.model.Sales"
+}]

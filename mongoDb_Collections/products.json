@@ -1,0 +1,29 @@
+[{
+  "_id": {
+    "$oid": "60931a8d2ad5db3c7c8c26a4"
+  },
+  "name": "Samsung Galaxy S10",
+  "price": "150000",
+  "quantity": "15",
+  "description": "New",
+  "image": "s10.jpg",
+  "category": "Mobile Phone",
+  "supplier": "iderkhangai amarkhuu",
+  "barcode": "572601319",
+  "brand": "Samsung",
+  "_class": "com.task.demo.model.Product"
+},{
+  "_id": {
+    "$oid": "60931aaa2ad5db3c7c8c26a5"
+  },
+  "name": "HP T110",
+  "price": "2500000",
+  "quantity": "10",
+  "description": "",
+  "image": "center_facing.png",
+  "category": "Laptop",
+  "supplier": "iderkhangai amarkhuu",
+  "barcode": "439868230",
+  "brand": "Dell",
+  "_class": "com.task.demo.model.Product"
+}]

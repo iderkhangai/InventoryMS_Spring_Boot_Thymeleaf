@@ -1,0 +1,10 @@
+[{
+  "_id": {
+    "$oid": "60931a682ad5db3c7c8c26a3"
+  },
+  "fullname": "iderkhangai amarkhuu",
+  "email": "iderhangai2014@gmail.com",
+  "phone": "+36706730794",
+  "address": "317, Building E/6, Miskolc, University Town, Magyarország\r\n317th door of 3rd floor, Building E/6 Miskolc University",
+  "_class": "com.task.demo.model.User"
+}]
