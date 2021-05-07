@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="fragment :: header"></head>
+<body class="sb-nav-fixed">
+<div th:replace="navigation :: navbar"></div>
+<div id="layoutSidenav">
+    <div th:replace="sidebar :: sidebar"></div>
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid">
+                <h1 class="mt-4"><i class="fas fa-table mr-1"></i> Products</h1>
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item"><a th:href="@{'/'}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Products</li>
+                </ol>
+                <div class="card-header">
+                    <button class="btn btn-success" data-toggle="modal" data-target="#addProduct"><i
+                            class="fas fa-plus"></i> New Product
+                    </button>
+                </div>
+                <div th:switch="${flash_message}">
+                    <div th:case="null"></div>
+                    <div th:case="*" class="alert alert-success alert-dismissible fade show" role="alert">
+                        <p th:text="${flash_message}"></p>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered" id="myTable" width="100%" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Name</th>
+                                <th>Code</th>
+                                <th>Category</th>
+                                <th>Brand</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="product : ${products}">
+                                <td><img th:src="@{${'/uploads/' + product.image}}" width="120"/></td>
+                                <td th:text="${product.name}"></td>
+                                <td th:text="${product.barcode}"></td>
+                                <td><span th:text="${product.category}" class="badge badge-primary"></span></td>
+                                <td><span th:text="${product.brand}" class="badge badge-success"></span></td>
+                                <td th:text="${product.quantity}"></td>
+                                <td th:text="${product.price}"></td>
+                                <td>
+                                    <a th:href="@{/product/view/{id}(id=${product.Id})}" class="btn btn-primary"><i
+                                            class="fas fa-eye"></i></a>
+                                    <a class="btn btn-warning" id="editBtn"
+                                       th:href="@{/product/find/{id}(id=${product.Id})}"><i
+                                            class="fas fa-edit editBtn"></i></a>
+                                    <a th:href="@{/product/delete/{id}(id=${product.Id})}" class="btn-danger btn"><i
+                                            class="fas fa-trash" name="deleteBtn" id="deleteBtn"></i></a>
+                                    <input type="hidden" id="id" value="${product.Id}" th:value="${product.Id}"/>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+<!--delete modal-->
+<div
+        id="delModal"
+        class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Delete Category</h4>
+                <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-hidden="true">&times;
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this record?</p>
+            </div>
+            <div class="modal-footer">
+                <input
+                        type="button"
+                        class="btn btn-default"
+                        data-dismiss="modal"
+                        value="No">
+                <a href="" class="btn btn-danger" id="delRef">Yes</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!--save modal-->
+<div
+        class="modal fade"
+        id="addProduct"
+        tabindex="-1"
+        role="dialog">
+    <form
+            id="myForm"
+            th:action="@{/product/save}"
+            th:object="${product}" th:method="post" enctype="multipart/form-data">
+
+        <div
+                class="modal-dialog modal-lg"
+                role="document">
+            <div class="modal-content">
+                <!-- modal header -->
+                <div class="modal-header">
+                    <h4 id="mTitle"
+                        class="modal-title">Add New Product</h4>
+                    <button
+                            type="button"
+                            class="close"
+                            data-dismiss="modal">&times;
+                    </button>
+                </div>
+                <!-- modal body -->
+                <div class="modal-body">
+                    <div class="form-group form-inline ">
+                        <label
+                                class="col-sm-3 justify-content-end"
+                                for="name">Name</label>
+                        <input
+                                type="text"
+                                class="form-control col-7"
+                                id="name" required
+                                name="name"/>
+                        </input>
+                    </div>
+                    <div class="form-group form-inline ">
+                        <label
+                                class="col-sm-3 justify-content-end"
+                                for="file">Image</label>
+                        <input required
+                               type="file" accept="image/png, image/jpeg"
+                               name="file" id="file"/>
+                        </input>
+                    </div>
+
+                    <div class="form-group form-inline ">
+                        <label
+                                class="col-sm-3 justify-content-end"
+                                for="file">Barcode</label>
+                        <input class="form-control col-7"
+                               type="text" required
+                               name="barcode" id="barcode"/>
+                        </input>
+                        <button type="button" id="btnBarcode" class="btn btn-default">
+                            <i class="fas fa-barcode fa-2x"
+                               aria-hidden="true"></i>
+                        </button>
+                    </div>
+
+
+                    <div class="form-group form-inline ">
+                        <label
+                                class="col-sm-3 justify-content-end"
+                                for="thumbnail"></label>
+                        <img class="" id="thumbnail" width="130"/>
+                    </div>
+
+                    <div class="form-group form-inline ">
+                        <label
+                                class="col-sm-3 justify-content-end"
+                                for="price">Price</label>
+                        <input required
+                               type="number"
+                               class=" form-control col-7"
+                               id="price"
+                               name="price"/>
+                        </input>
+                    </div>
+
+                    <div class="form-group form-inline ">
+                        <label
+                                class="col-sm-3 justify-content-end"
+                                for="brand">Brand</label>
+                        <select class="form-control" id="brand" name="brand" required>
+                            <option value="0">Choose Brand</option>
+                            <option th:each="brand : ${brands}"
+                                    th:value="${brand.name}"
+                                    th:text="${brand.name}"></option>
+                        </select>
+                    </div>
+
+                    <div class="form-group form-inline ">
+                        <label
+                                class="col-sm-3 justify-content-end"
+                                for="description">Category</label>
+                        <select class="form-control" id="category" name="category" required>
+                            <option value="0">Choose category</option>
+                            <option th:each="category : ${categories}"
+                                    th:value="${category.name}"
+                                    th:text="${category.name}"></option>
+                        </select>
+                    </div>
+                    <div class="form-group form-inline ">
+                        <label
+                                class="col-sm-3 justify-content-end"
+                                for="supplier">Supplier</label>
+                        <select class="form-control" id="supplier" name="supplier" required>
+                            <option value="0">Choose Supplier</option>
+                            <option th:each="supplier : ${suppliers}"
+                                    th:value="${supplier.name}"
+                                    th:text="${supplier.name}"></option>
+                        </select>
+                    </div>
+
+
+                    <div class="form-group form-inline ">
+                        <label
+                                class="col-sm-3 justify-content-end"
+                                for="description">Description</label>
+                        <textarea id="description" name="description"
+                                  class="form-control col-7"></textarea>
+                    </div>
+
+                    <div class="form-group form-inline ">
+                        <label
+                                class="col-sm-3 justify-content-end"
+                                for="quantity">Quantity</label>
+                        <input type="number" required
+                               class=" form-control col-7"
+                               id="quantity"
+                               name="quantity"/>
+                        </input>
+                    </div>
+
+                </div>
+                <!-- modal footer -->
+                <div class="modal-footer">
+                    <div class="btn-group">
+                        <button
+                                class="btn btn-primary"
+                                type="submit">Save
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button
+                                type="button"
+                                class="btn btn-secondary"
+                                data-dismiss="modal">Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!--update-->
+<div
+        class="modal fade"
+        id="editModal"
+        tabindex="-1"
+        role="dialog">
+    <form
+            id="editForm"
+            th:action="@{/product/edit}"
+            th:object="${product}" th:method="post" enctype="multipart/form-data">
+
+        <div
+                class="modal-dialog modal-lg"
+                role="document">
+            <div class="modal-content">
+                <!-- modal header -->
+                <div class="modal-header">
+                    <h4 id="mTitle"
+                        class="modal-title">Edit Product</h4>
+                    <button
+                            type="button"
+                            class="close"
+                            data-dismiss="modal">&times;
+                    </button>
+                </div>
+                <!-- modal body -->
+                <div class="modal-body">
+                    <div class="form-group form-inline ">
+                        <label
+                                class="col-sm-3 justify-content-end"
+                                for="name">Name</label>
+                        <input
+                                type="text"
+                                class="form-control col-7"
+                                id="name"
+                                name="name"/>
+                        </input>
+                    </div>
+                    <div class="form-group form-inline ">
+                        <label
+                                class="col-sm-3 justify-content-end"
+                                for="file">Image</label>
+                        <input
+                                type="file" accept="image/png, image/jpeg"
+                                name="file" id="file"/>
+                        </input>
+                    </div>
+                    <div class="form-group form-inline ">
+                        <label
+                                class="col-sm-3 justify-content-end"
+                                for="thumbnail"></label>
+                        <img class="" id="thumbnail" width="130"/>
+                    </div>
+                    <div class="form-group form-inline ">
+                        <label
+                                class="col-sm-3 justify-content-end"
+                                for="file">Barcode</label>
+                        <input class="form-control col-7"
+                               type="text"
+                               name="barcode" id="barcode"/>
+                        </input>
+                        <button type="button" id="btnBarcode" class="btn btn-default">
+                            <i class="fas fa-barcode fa-2x"
+                               aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <div class="form-group form-inline ">
+                        <label
+                                class="col-sm-3 justify-content-end"
+                                for="price">Price</label>
+                        <input
+                                type="number"
+                                class=" form-control col-7"
+                                id="price"
+                                name="price"/>
+                        </input>
+                    </div>
+
+                    <div class="form-group form-inline ">
+                        <label
+                                class="col-sm-3 justify-content-end"
+                                for="brand">Brand</label>
+                        <select class="form-control" id="brand" name="brand">
+                            <option value="0">Choose Brand</option>
+                            <option th:each="brand : ${brands}"
+                                    th:value="${brand.name}"
+                                    th:text="${brand.name}"></option>
+                        </select>
+                    </div>
+
+                    <div class="form-group form-inline ">
+                        <label
+                                class="col-sm-3 justify-content-end"
+                                for="description">Category</label>
+                        <select class="form-control" id="category" name="category">
+                            <option value="0">Choose category</option>
+                            <option th:each="category : ${categories}"
+                                    th:value="${category.name}"
+                                    th:text="${category.name}"></option>
+                        </select>
+                    </div>
+                    <div class="form-group form-inline ">
+                        <label
+                                class="col-sm-3 justify-content-end"
+                                for="supplier">Supplier</label>
+                        <select class="form-control" id="supplier" name="supplier">
+                            <option value="0">Choose Supplier</option>
+                            <option th:each="supplier : ${suppliers}"
+                                    th:value="${supplier.name}"
+                                    th:text="${supplier.name}"></option>
+                        </select>
+                    </div>
+
+
+                    <div class="form-group form-inline ">
+                        <label
+                                class="col-sm-3 justify-content-end"
+                                for="description">Description</label>
+                        <textarea id="description" name="description"
+                                  class="form-control col-7"></textarea>
+                    </div>
+
+                    <div class="form-group form-inline ">
+                        <label
+                                class="col-sm-3 justify-content-end"
+                                for="quantity">Quantity</label>
+                        <input type="number"
+                               class=" form-control col-7"
+                               id="quantity"
+                               name="quantity"/>
+                        </input>
+                    </div>
+                    <input type="text"
+                           class=" form-control col-7"
+                           id="updateID"
+                           name="updateID"/>
+                    </input>
+                </div>
+                <!-- modal footer -->
+                <div class="modal-footer">
+                    <div class="btn-group">
+                        <button
+                                class="btn btn-primary"
+                                type="submit">Update
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button
+                                type="button"
+                                class="btn btn-secondary"
+                                data-dismiss="modal">Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div th:replace="footer :: footer"></div>
+<script>
+    $(document).ready(function () {
+        $('#editBtn').click(function (e) {
+            e.preventDefault();
+            console.log("URL - " + $(this).attr("href"));
+            var href = 'http://localhost:9090' + $(this).attr("href");
+            console.log("href  - ", href);
+            $.get(href, function (product, status) {
+                console.log("Response - ", product);
+                $("#editModal #updateID").val(product.id);
+                $("#editModal #barcode").val(product.barcode);
+                $("#editModal #name").val(product.name);
+                $("#editModal #price").val(product.price);
+                $("#editModal #brand").val(product.brand);
+                $("#editModal #category").val(product.category);
+                $("#editModal #supplier").val(product.supplier);
+                $("#editModal #description").val(product.description);
+                $("#editModal #quantity").val(product.quantity);
+                $("#editModal #thumbnail").attr("src", "/uploads/" + product.image);
+                $("#editModal #file").val("/uploads/" + product.image)
+
+            });
+
+            $('#editModal').modal();
+        });
+    });
+    $(document).ready(function () {
+        $('#btnBarcode').click(function () {
+            var barcode = Math.floor(Math.random() * 1000000000);
+            document.getElementById("barcode").value = barcode;
+        });
+    });
+
+    $(document).ready(function () {
+        $("#file").change(function () {
+            showImageThumbnail(this);
+
+        });
+        $("#deleteBtn").click(function (e) {
+            e.preventDefault();
+            var href = (this).attr('href');
+            $('#delModal #delRef').attr('href', href);
+            $('#delModal').modal();
+
+        });
+    });
+
+    function showImageThumbnail(fileInput) {
+        file = fileInput.files[0];
+        reader = new FileReader();
+        reader.onload = function (e) {
+            $('#thumbnail').attr("src", e.target.result);
+        };
+        reader.readAsDataURL(file);
+    }
+</script>
+</body>
+</html>

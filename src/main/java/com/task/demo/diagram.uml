@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="0.0" y="475.0">com.task.demo.model.Supplier</node>
+    <node x="0.0" y="1006.0">com.task.demo.controller.BrandController</node>
+    <node x="229.0" y="0.0">com.task.demo.model.Product</node>
+    <node x="458.0" y="0.0">com.task.demo.controller.ProductController</node>
+    <node x="0.0" y="752.0">com.task.demo.controller.DashboardController</node>
+    <node x="237.0" y="1315.0">com.task.demo.repository.BrandRepository</node>
+    <node x="687.0" y="475.0">com.task.demo.controller.SalesController</node>
+    <node x="1048.0" y="1194.0">com.task.demo.repository.CategoryRepository</node>
+    <node x="803.0" y="1194.0">com.task.demo.repository.DashboardRepository</node>
+    <node x="327.0" y="752.0">com.task.demo.controller.CategoryController</node>
+    <node x="0.0" y="1315.0">com.task.demo.repository.SupplierRepository</node>
+    <node x="683.0" y="752.0">com.task.demo.controller.SupplierController</node>
+    <node x="229.0" y="475.0">com.task.demo.model.Brand</node>
+    <node x="0.0" y="0.0">com.task.demo.model.Sales</node>
+    <node x="458.0" y="475.0">com.task.demo.model.Category</node>
+    <node x="450.0" y="1315.0">com.task.demo.repository.UserRepository</node>
+    <node x="670.0" y="1006.0">com.task.demo.config.config</node>
+    <node x="0.0" y="1194.0">com.task.demo.config.LdapConfigure</node>
+    <node x="574.0" y="1194.0">com.task.demo.repository.ProductRepository</node>
+    <node x="342.0" y="1194.0">com.task.demo.repository.SalesRepository</node>
+    <node x="339.0" y="1006.0">com.task.demo.controller.UserController</node>
+    <node x="848.0" y="0.0">com.task.demo.model.User</node>
+  </nodes>
+  <notes />
+  <edges />
+  <settings layout="Hierarchic Group" zoom="0.6510028653295128" x="1086.5000000000002" y="316.4040492957747" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Constructors</Category>
+    <Category>Properties</Category>
+    <Category>Methods</Category>
+    <Category>Inner Classes</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

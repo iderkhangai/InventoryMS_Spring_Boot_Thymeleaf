@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="fragment :: header"></head>
+<link href="../../css/styles.css" rel="stylesheet"/>
+<body class="sb-nav-fixed">
+<style>
+    #invoice {
+        padding: 70px;
+    }
+
+    .invoice {
+        position: relative;
+        background-color: #FFF;
+        min-height: 680px;
+        padding: 15px
+    }
+
+    .invoice header {
+        padding: 10px 0;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #3989c6
+    }
+
+    .invoice .company-details {
+        text-align: right
+    }
+
+    .invoice .company-details .name {
+        margin-top: 0;
+        margin-bottom: 0
+    }
+
+    .invoice .contacts {
+        margin-bottom: 20px
+    }
+
+    .invoice .invoice-to {
+        text-align: left
+    }
+
+    .invoice .invoice-to .to {
+        margin-top: 0;
+        margin-bottom: 0
+    }
+
+    .invoice .invoice-details {
+        text-align: right
+    }
+
+    .invoice .invoice-details .invoice-id {
+        margin-top: 0;
+        color: #3989c6
+    }
+
+    .invoice main {
+        padding-bottom: 50px
+    }
+
+    .invoice main .thanks {
+        /*margin-top: -100px;*/
+        font-size: 2em;
+        margin-bottom: 40px
+    }
+
+    .grandTotal {
+        position: absolute;
+        right: 15px;
+        bottom: 130px;
+    }
+
+    .invoice main .notices {
+        padding-left: 6px;
+        border-left: 6px solid #3989c6
+    }
+
+    .invoice main .notices .notice {
+        font-size: 1.2em
+    }
+
+    .invoice table {
+        width: 100%;
+        border-collapse: collapse;
+        border-spacing: 0;
+        margin-bottom: 20px
+    }
+
+    .invoice table td, .invoice table th {
+        padding: 15px;
+        background: #eee;
+        border-bottom: 1px solid #fff
+    }
+
+    .invoice table th {
+        white-space: nowrap;
+        font-weight: 400;
+        font-size: 16px
+    }
+
+    .invoice table td h3 {
+        margin: 0;
+        font-weight: 400;
+        color: #3989c6;
+        font-size: 1.2em
+    }
+
+    .invoice table .qty, .invoice table .total, .invoice table .unit {
+        text-align: right;
+        font-size: 1.2em
+    }
+
+    .invoice table .no {
+        color: #fff;
+        font-size: 1.6em;
+        background: #3989c6
+    }
+
+    .invoice table .unit {
+        background: #ddd
+    }
+
+    .invoice table .total {
+        background: #3989c6;
+        color: #fff
+    }
+
+    .invoice table tbody tr:last-child td {
+        border: none
+    }
+
+    .invoice table tfoot td {
+        background: 0 0;
+        border-bottom: none;
+        white-space: nowrap;
+        text-align: right;
+        padding: 10px 20px;
+        font-size: 1.2em;
+        border-top: 1px solid #aaa
+    }
+
+    .invoice table tfoot tr:first-child td {
+        border-top: none
+    }
+
+    .invoice table tfoot tr:last-child td {
+        color: #3989c6;
+        font-size: 1.4em;
+        border-top: 1px solid #3989c6
+    }
+
+    .invoice table tfoot tr td:first-child {
+        border: none
+    }
+
+    .invoice footer {
+        width: 100%;
+        text-align: center;
+        color: #777;
+        border-top: 1px solid #aaa;
+        padding: 8px 0
+    }
+
+    @media print {
+        .invoice {
+            font-size: 11px !important;
+            overflow: hidden !important
+        }
+
+        .invoice footer {
+            position: absolute;
+            bottom: 10px;
+            page-break-after: always
+        }
+
+        .invoice > div:last-child {
+            page-break-before: always
+        }
+    }
+</style>
+<div th:replace="navigation :: navbar"></div>
+<div id="layoutSidenav">
+    <div th:replace="sidebar :: sidebar"></div>
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid">
+                <h1 class="mt-4"><i class="fas fa-table mr-1"></i> Sales Details - <span
+                        th:text="${sale.salecode}"></span></h1>
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item"><a th:href="@{'/sales'}">Sales</a></li>
+                    <li class="breadcrumb-item active">Sale - <span th:text="${sale.salecode}"></span></li>
+                </ol>
+                <div id="invoice">
+                    <div class="toolbar hidden-print">
+                        <div class="text-right">
+                            <button id="printInvoice" class="btn btn-info"><i class="fa fa-print"></i> Print</button>
+                        </div>
+                        <hr>
+                    </div>
+                    <div class="invoice overflow-auto">
+                        <div style="min-width: 600px">
+                            <header>
+                                <div class="row">
+                                    <div class="col">
+                                        <a href="#">
+                                            <img src="data:image/png;base64,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"
+                                                 data-holder-rendered="true"/>
+                                        </a>
+                                    </div>
+                                    <div class="col company-details">
+                                        <h3 class="name">Iderkhangai Amarkhuu
+                                        </h3>
+                                        <div>Miskolc, University Town</div>
+                                        <div>+(36) 706730794</div>
+                                        <div>iderhangai2014@gmail.com</div>
+                                    </div>
+                                </div>
+                            </header>
+                            <main>
+                                <div class="row contacts">
+                                    <div class="col invoice-to">
+                                        <div class="text-gray-light"><h3>INVOICE TO: </h3></div>
+                                        <h4 class="to" th:text="${sale.user.fullname}"></h4>
+                                        <div class="email" th:text="${sale.user.email}"></div>
+                                        <div class="email" th:text="${sale.user.phone}"></div>
+                                        <div class="address" th:text="${sale.user.address}"></div>
+                                    </div>
+                                    <div class="col invoice-details">
+                                        <h1 class="invoice-id">INVOICE NO- <span th:text="${sale.salecode}"></span></h1>
+                                        <div class="date">Date of Invoice: <span th:text="${sale.date}"></span></div>
+                                        <div class="date">Due Date: 30/10/2021</div>
+                                    </div>
+                                </div>
+                                <table id="saleTable" class="table table-striped table-hover" border="0"
+                                       cellspacing="0"
+                                       cellpadding="0">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Name</th>
+                                        <th>Image</th>
+                                        <th>Price</th>
+                                        <th>Quantity</th>
+                                        <th>Subtotal</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="product : ${sale.products}">
+                                        <td class="no" th:text="${product.barcode}"></td>
+                                        <td th:text="${product.name}"></td>
+                                        <td><img th:src="@{${'/uploads/' + product.image}}" width="120"/></td>
+                                        <td class="unit"><span id="unit" th:text="${product.price}"></span></td>
+                                        <td class="qty" id="qty" th:text="${product.quantity}"></td>
+                                        <td class="total" id=""><p id="total"></p></td>
+                                    </tr>
+                                    </tbody>
+                                    <tfoot>
+                                    <!--                                    <tr>`-->
+                                    <!--                                        <td colspan="2"></td>-->
+                                    <!--                                        <td colspan="2">SUBTOTAL</td>-->
+                                    <!--                                        <td>$5,200.00</td>-->
+                                    <!--                                    </tr>-->
+                                    <tr class="grandTotal">
+                                        <td colspan="2"></td>
+                                        <td colspan="2">GRAND TOTAL:</td>
+                                        <td id="grandTotal"></td>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                                <div class="thanks">Thank you!</div>
+                                <div class="notices">
+                                    <div>Note:</div>
+                                    <div class="notice"><span th:text="${sale.note}"></span>
+                                    </div>
+                                </div>
+                            </main>
+                            <footer style="color: #fd7e14">
+                                Invoice was created on a system and is valid without the signature and seal.
+                            </footer>
+                        </div>
+                        <div></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+<div th:replace="footer :: footer"></div>
+<script>
+    $(document).ready(function () {
+        var total = 0;
+        $('#saleTable tbody tr').each(function (index) {
+            console.log("test", index)
+            var unit = $(this).find('#unit').text();
+            var qty = $(this).find('#qty').text();
+            console.log("unit: ", unit);
+            console.log("qty: ", qty);
+            total = parseInt(qty) * parseInt(unit);
+            console.log("Total: ", total);
+            document.getElementById("total").innerHTML = total;
+        });
+
+
+        var grandTotal = 0;
+        $('#total').each(function () {
+
+            var price = $(this).text();
+            console.log("price", price);
+            grandTotal += parseInt(price);
+        });
+        console.log("grandTotal-", grandTotal);
+        document.getElementById("grandTotal").innerHTML = grandTotal;
+
+        $('#printInvoice').click(function () {
+            Popup($('.invoice')[0].outerHTML);
+
+            function Popup(data) {
+                window.print();
+                return true;
+            }
+        });
+    });
+</script>
+</body>
+</html>

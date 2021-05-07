@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="fragment :: header"></head>
+<link href="../../css/styles.css" rel="stylesheet"/>
+<body class="sb-nav-fixed">
+<div th:replace="navigation :: navbar"></div>
+<div id="layoutSidenav">
+    <div th:replace="sidebar :: sidebar"></div>
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid">
+                <h1 class="mt-4"><i class="fas fa-table mr-1"></i> Products</h1>
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item"><a th:href="@{'/'}">Product</a></li>
+                    <li class="breadcrumb-item active">Product Details</li>
+                </ol>
+                <div class="card-body row">
+                    <div class="col-md-12">
+                        <div class="barcode-img">
+                            <img src="/uploads/barcode.svg" width="300px"/>
+                            <p style="font-weight: bold;font-size: 20px;position: absolute;left: 110px;top: 135px"
+                               th:text="${product.barcode}" disabled></p>
+                        </div>
+                    </div>
+                    <hr>
+                    <br>
+                    <div class="col-md-6 tbl">
+                        <table class="table table-hover table-bordered table-md">
+                            <tbody>
+                            <tr>
+                                <td>Code Product</td>
+                                <th th:text="${product.barcode}"></th>
+                            </tr>
+                            <tr>
+                                <td>Product</td>
+                                <th th:text="${product.name}"></th>
+                            </tr>
+                            <tr>
+                                <td>Category</td>
+                                <th th:text="${product.category}"></th>
+                            </tr>
+                            <tr>
+                                <td>Brand</td>
+                                <th th:text="${product.brand}"></th>
+                            </tr>
+                            <tr>
+                                <td>Price</td>
+                                <th th:text="${product.price}"></th>
+                            </tr>
+                            <tr>
+                                <td>Supplier</td>
+                                <th><span class="badge badge-primary" th:text="${product.supplier}"></span>
+                                </th>
+                            </tr>
+                            <tr>
+                                <td>Stock Alert</td>
+                                <th><span class="badge badge-warning" th:text="${product.quantity}"></span>
+                                </th>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-4">
+                        <td><img th:src="@{${'/uploads/' + product.image}}" width="80%"/></td>
+                    </div>
+                    <hr>
+                    <div class="col-md-12">
+                        <div class="jumbotron">
+                            <p th:text="${product.description}"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+<div th:replace="footer :: footer"></div>
+</body>
+</html>

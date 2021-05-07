@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="fragment :: header"></head>
+<body class="sb-nav-fixed">
+<div th:replace="navigation :: navbar"></div>
+<div id="layoutSidenav">
+    <div th:replace="sidebar :: sidebar"></div>
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid">
+                <h1 class="mt-4"><i class="fas fa-table mr-1"></i> Sales</h1>
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item"><a th:href="@{'/'}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Sales</li>
+                </ol>
+                <div class="card-header">
+                    <button class="btn btn-success" data-toggle="modal" data-target="#addSale"><i
+                            class="fas fa-plus"></i> Create Sales
+                    </button>
+                </div>
+                <div th:switch="${flash_message}">
+                    <div th:case="null"></div>
+                    <div th:case="*" class="alert alert-success alert-dismissible fade show" role="alert">
+                        <p th:text="${flash_message}"></p>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered" id="myTable" width="100%" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Customer</th>
+                                <th>Status</th>
+                                <th>Paid</th>
+                                <th>Payment Status</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="sale : ${sales}">
+                                <td th:text="${sale.salecode}"></td>
+                                <td th:text="${sale.user.fullname}"></td>
+                                <td th:switch="${sale.status}">
+                                    <span th:case="Pending" class="badge badge-warning"
+                                          th:text="${sale.status}"> </span>
+                                    <span th:case="Ordered" class="badge badge-primary"
+                                          th:text="${sale.status}"> </span>
+                                    <span th:case="Completed" class="badge badge-success"
+                                          th:text="${sale.status}"> </span>
+                                </td>
+                                <td><span th:text="${sale.date}"></span></td>
+                                <td th:switch="${sale.paymentStatus}">
+                                     <span th:case="Paid" class="badge badge-success"
+                                           th:text="${sale.paymentStatus}"> </span>
+                                    <span th:case="Unpaid" class="badge badge-danger"
+                                          th:text="${sale.paymentStatus}"> </span>
+                                    <span th:case="Pending" class="badge badge-warning"
+                                          th:text="${sale.paymentStatus}"> </span>
+                                </td>
+                                <td>
+                                    <a th:href="@{/sale/view/{id}(id=${sale.id})}" class="btn btn-primary"><i
+                                            class="fas fa-eye"></i></a>
+                                    <a th:href="@{/sale/delete/{id}(id=${sale.id})}" class="btn-danger btn"><i
+                                            class="fas fa-trash" name="deleteBtn" id="deleteBtn"></i></a>
+                                    <input type="hidden" id="id" value="${sale.id}" th:value="${sale.id}"/>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+<!--save modal-->
+<div
+        class="modal fade"
+        id="addSale"
+        tabindex="-1"
+        role="dialog">
+    <form
+            id="myForm"
+            th:action="@{/sale/save}"
+            th:object="${sales}" th:method="post">
+        <div
+                class="modal-dialog modal-lg"
+                role="document">
+            <div class="modal-content">
+                <!-- modal header -->
+                <div class="modal-header">
+                    <h4 id="mTitle"
+                        class="modal-title">Create Sale</h4>
+                    <button
+                            type="button"
+                            class="close"
+                            data-dismiss="modal">&times;
+                    </button>
+                </div>
+                <!-- modal body -->
+                <div class="modal-body">
+                    <div class="form-group form-inline ">
+                        <label
+                                class="col-sm-3 justify-content-end"
+                                for="date">Date</label>
+                        <input required
+                                type="date"
+                                class="form-control col-7"
+                                id="date"
+                                name="date"/>
+                        </input>
+                    </div>
+                    <div class="form-group form-inline ">
+                        <label
+                                class="col-sm-3 justify-content-end"
+                                for="salecode">Code</label>
+                        <input class="form-control col-7"
+                               type="text" required="required"
+                               name="salecode" id="salecode"/>
+                        </input>
+                        <button type="button" id="btnSaleCode" class="btn btn-default">
+                            <i class="fas fa-code fa-2x"
+                               aria-hidden="true"></i>
+                        </button>
+                    </div>
+
+                    <div class="form-group form-inline ">
+                        <label
+                                class="col-sm-3 justify-content-end"
+                                for="status">Customer</label>
+                        <select class="form-control" id="user" name="user" required>
+                            <option value="0">Choose buyer</option>
+                            <option th:each="user : ${users}" th:value="${user.id}"
+                                    th:text="${user.fullname}"></option>
+                        </select>
+                    </div>
+
+                    <div class="form-group form-inline ">
+                        <label
+                                class="col-sm-3 justify-content-end"
+                                for="products">Products</label>
+                        <select required class="form-control selectpicker" id="products" name="products" multiple="multiple">
+                            <option value="0">Choose products to sell</option>
+                            <option th:each="product : ${products}" th:value="${product.Id}"
+                                    th:text="${product.name}"></option>
+                        </select>
+                    </div>
+
+                    <div class="form-group form-inline ">
+                        <label
+                                class="col-sm-3 justify-content-end"
+                                for="status">Status</label>
+                        <select required class="form-control" id="status" name="status">
+                            <option value="0">Choose Status</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Ordered">Ordered</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group form-inline ">
+                        <label
+                                class="col-sm-3 justify-content-end"
+                                for="paymentStatus">Payment Status</label>
+                        <select required class="form-control" id="paymentStatus" name="paymentStatus">
+                            <option value="0">Choose Payment Status</option>
+                            <option value="Paid">Paid</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Unpaid">Unpaid</option>
+                        </select>
+                    </div>
+                    <div class="form-group form-inline ">
+                        <label
+                                class="col-sm-3 justify-content-end"
+                                for="amount">Amount</label>
+                        <input required
+                                type="number" step="0.01"
+                                class="form-control col-7"
+                                id="amount"
+                                name="amount"/>
+                        </input>
+                    </div>
+                    <div class="form-group form-inline ">
+                        <label
+                                class="col-sm-3 justify-content-end"
+                                for="note">Note</label>
+                        <textarea id="note" name="note"
+                                  class="form-control col-7"></textarea>
+                    </div>
+
+                    <div class="form-group form-inline ">
+                        <label
+                                class="col-sm-3 justify-content-end"
+                                for="quantity">Quantity</label>
+                        <input type="number" required
+                               class=" form-control col-7"
+                               id="quantity"
+                               name="quantity"/>
+                        </input>
+                    </div>
+
+                </div>
+                <!-- modal footer -->
+                <div class="modal-footer">
+                    <div class="btn-group">
+                        <button
+                                class="btn btn-primary"
+                                type="submit">Save
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button
+                                type="button"
+                                class="btn btn-secondary"
+                                data-dismiss="modal">Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div th:replace="footer :: footer"></div>
+<script>
+    $(document).ready(function () {
+        $('#btnSaleCode').click(function () {
+            var salecode = "SL_" + Math.floor(Math.random() * 1000);
+            document.getElementById("salecode").value = salecode;
+        });
+    });
+
+</script>
+</body>
+</html>
